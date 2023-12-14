@@ -1,5 +1,5 @@
 const fs = require('fs')
-const https = require('https')
+const https = require('http')
 const sqlite3 = require('sqlite3').verbose();
 
 let db = new sqlite3.Database('./todo.db');
@@ -13,6 +13,7 @@ const requestListener = function (req, res) {
         const hash = cookies.hash;
         if (req.url == '/'){
             res.writeHead(200, {'Content-Type': 'text/html'})
+		console.log('welcome')
             GetHTML(hash,res)
         }
         if (req.url == '/styles.css'){
@@ -530,9 +531,9 @@ const options = {
 };
 
 
-const server = https.createServer(options,requestListener);
-server.listen(8843, () => {
-    console.log(`Server is running on http://127.0.0.1:8843`);
+const server = https.createServer(requestListener);
+server.listen(8080, () => {
+    console.log(`Server is running on http://127.0.0.1:8080`);
 })
 
 //Сохранение ошибок
