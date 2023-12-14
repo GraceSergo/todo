@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User panel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="logout"><!--%USER%--> <input type="button" value="Logout" onclick="Logout()"></div>
+    <header>
+        <h1>User panel</h1>
+    </header>
+    <input type="button" value="New task" class="button" onclick="TaskBtn()">
+    <!--%GetNewTasks%-->
+    <table class="table">
+        <thead>
+        <tr>
+            <th style="width: 45px;">ID</th>
+            <th style="width: 200px;">Header</th>
+            <th>Description</th>
+            <th style="width: 30px;"></th>
+            <th style="width: 350px;">Files</th>
+            <th style="width: 100px;"><div id="checkboxes">
+                  <label><input type="checkbox" class="checkbox" value="3" checked>work</label><br>
+                  <label><input type="checkbox" class="checkbox" value="4">done</label><br>
+                  <label><input type="checkbox" class="checkbox" value="5">archive</label>
+            </th>
+            <th>Result</th>
+        </tr>
+        </thead>
+        <!--%TABLE%-->
+    </table>
+<div class="taskbg bgtask">
+    <div class="newtask">
+        <span class="h3">Task</span>
+        <form action="" id="newtask" >
+            <fieldset>
+                <legend style="justify-content: space-between;display: flex;width: 100%;">Header
+                    <button onclick="DoneTask()">Завершить задачу</button>
+            </legend>
+                <input type="text" name="header" id="header" placeholder="Header" disabled>
+            </fieldset>
+            <fieldset>
+                <legend>Description</legend>
+                <textarea name="description" id="description" cols="30" rows="10" disabled></textarea>
+            </fieldset>
+            <fieldset>
+                <legend style="justify-content: space-between;display: flex;width: 100%;">Files 
+                    <input type="button" value="downloads" class="downloads" onclick="DownloadsFile()"></legend>
+                <div class="downloadupload">
+                    <div class="files" ></div>
+
+                    <div class="drag-image">
+                        <span>Drag & Drop File Here</span>
+                        <button class="button">Browse File</button>
+                        <input type="file" hidden id="files" multiple data-files="">
+                        <input type="text" name="clip" id="clip" placeholder="Paste screenshot">
+                    </div>
+
+                </div>
+                    
+                    <!-- <div class="clippicture"></div> -->
+                
+            </fieldset>
+            <fieldset>
+                <legend>Result</legend>
+                <input type="text" name="result" id="result" placeholder="Result">
+            </fieldset>
+            <input type="button" class="button" value="Save" id="saveTask" onclick="SaveTask()">
+        </form>
+    </div>
+</div>
+<div class="taskbg cbg">
+    <div class="commentbox">
+        <span>Comment</span>
+        <form action="" id="comments" >
+            <div class="commenttext"></div>
+            <input type="text" name="text" id="text" autofocus>
+            <button class="send" onclick="SendMessage()">Send</button>
+        </form>
+    </div>
+</div>
+<div class="taskbg showpimg">
+    <img src="" alt="">
+</div>
+<div class="back"><span class="backhead"></span><span class="backdesc"></span><span class="backres"></span></div>
+<script src="./script.js"></script>
+</body>
+
+</html>

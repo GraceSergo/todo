@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin panel</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div class="logout"><!--%USER%--> <input type="button" value="Logout" onclick="Logout()"></div>
+    <header>
+        <h1>Admin panel</h1>
+    </header>
+    <input type="button" value="New task" class="button" onclick="TaskBtn()">
+    <input type="button" value="New user" class="button" onclick="UserBtn()">
+    <table class="table">
+        <thead>
+        <tr>
+            <th style="width: 45px;">id</th>
+            <th style="width: 200px;">Header</th>
+            <th>Description</th>
+            <th style="width: 30px;"></th>
+            <th style="width: 350px;">Files</th>
+            <th style="width: 100px;"><div id="checkboxes">
+                  <label><input type="checkbox" class="checkbox" value="1" checked>new</label><br>
+                  <label><input type="checkbox" class="checkbox" value="2" checked>queue</label><br>
+                  <label><input type="checkbox" class="checkbox" value="3" checked>work</label><br>
+                  <label><input type="checkbox" class="checkbox" value="4" checked>done</label><br>
+                  <label><input type="checkbox" class="checkbox" value="5">archive</label>
+            </th>
+            <th>Result</th>
+            <th style="width: 150px;">User<br>
+            <select name="userfilter" id="userfilter">
+
+            </select></th>
+        </tr>
+        </thead>
+        <!--%TABLE%-->
+    </table>
+<div class="taskbg bguser">
+    <div class="newuser">
+        <span>New user</span>
+        <form action="" id="newuser">
+            <fieldset>
+                <legend style="display: flex;width: 100%; justify-content: space-between;">Login
+                    <select id="role">
+                        <option value="2">user</option>
+                        <option value="0">block</option>
+                        <option value="3">moderator</option>
+                        <option value="1">admin</option>
+                    </select>
+            </legend>
+                <input type="text" name="login" id="login" placeholder="login">
+            </fieldset>
+            <fieldset>
+                <legend>Password</legend>
+                <input type="password" name="password" id="password" placeholder="password">
+                <input type="password" name="password2" id="password2" placeholder="password">
+            </fieldset>
+            <fieldset>
+                <legend>Name</legend>
+                <input type="text" name="name" id="name" placeholder="name">
+            </fieldset>
+            <input type="button" class="button" value="Save" id="saveUser" onclick="SaveUser()">
+        </form>
+    </div>
+</div>
+<div class="taskbg bgtask">
+    <div class="newtask">
+        <span class="h3">New task</span>
+        <form action="" id="newtask" >
+            <fieldset>
+                <legend style="justify-content: space-between;display: flex;width: 100%;">Header
+                    <select id="status">
+                        <option value="1">new</option>
+                        <option value="2">queue</option>
+                        <option value="3">work</option>
+                        <option value="4">done</option>
+                        <option value="5">archive</option>
+                    </select>
+            </legend>
+                <input type="text" name="header" id="header" placeholder="Header">
+            </fieldset>
+            <fieldset>
+                <legend>Description</legend>
+                <textarea name="description" id="description" cols="30" rows="10"></textarea>
+            </fieldset>
+            <fieldset>
+                <legend style="justify-content: space-between;display: flex;width: 100%;">Files 
+                    <input type="button" value="downloads" class="downloads" onclick="DownloadsFile()"></legend>
+                <div class="downloadupload">
+                    <div class="files" ></div>
+
+                    <div class="drag-image">
+                        <span>Drag & Drop File Here</span>
+                        <button class="button">Browse File</button>
+                        <input type="file" hidden id="files" multiple data-files="">
+                        <input type="text" name="clip" id="clip" placeholder="Paste screenshot">
+                    </div>
+
+                </div>
+                    
+                    <!-- <div class="clippicture"></div> -->
+                
+            </fieldset>
+            <fieldset>
+                <legend>Result</legend>
+                <input type="text" name="result" id="result" placeholder="Result">
+            </fieldset>
+            <fieldset>
+                <legend>User</legend>
+                Назначить исполнителя
+                <select id="user">
+
+                </select>
+            </fieldset>
+            <input type="button" class="button" value="Save" id="saveTask" onclick="SaveTask()">
+        </form>
+    </div>
+</div>
+<div class="taskbg cbg">
+    <div class="commentbox">
+        <span>Comment</span>
+        <form action="" id="comments" >
+            <div class="commenttext"></div>
+            <input type="text" name="text" id="text" autofocus>
+            <button class="send" onclick="SendMessage()">Send</button>
+        </form>
+    </div>
+</div>
+<div class="taskbg showpimg">
+    <img src="" alt="">
+</div>
+<div class="back"><span class="backhead"></span><span class="backdesc"></span><span class="backres"></span><span class="backstatus"></span><span class="backuser"></span></div>
+<script>
+    //Вывод пользователей
+    const users = `<!--%USERS%-->`
+    document.getElementById('user').innerHTML = users
+    document.getElementById('userfilter').innerHTML = '<option value="all" selected>Все исполнители</option>'+users
+</script>
+<script src="./script.js"></script>
+</body>
+
+</html>
