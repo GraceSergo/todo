@@ -1,16 +1,13 @@
 {
   "version": 2,
-  "builds": [{ "src": "todo.js", "use": "@now/node-server" }],
-  "routes": [
+  "builds": [{
+    "src": "./todo.js",
+    "use": "@now/node-server"
+  }],
+  "routes": [{"handle": "filesystem"},
     {
-      "src": "/",
-      "dest": "/todo.js",
-      "methods": ["GET"]
-    },
-    {
-      "src": "/",
-      "dest": "/todo.js",
-      "methods": ["POST"]
+      "src": "/.*",
+      "dest": "todo.js"
     }
   ]
 }
