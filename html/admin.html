@@ -9,12 +9,15 @@
 </head>
 
 <body>
-    <div class="logout"><!--%USER%--> <input type="button" value="Logout" onclick="Logout()"></div>
+    <div class="logout"><!--%USER%--> <input type="button" value="Logout" onclick="Logout()"><br>
+        <input type="button" value="SaveBD" onclick="SaveBD()"><input type="file" id="loaddb" accept=".db">
+    </div>
     <header>
         <h1>Admin panel</h1>
     </header>
     <input type="button" value="New task" class="button" onclick="TaskBtn()">
     <input type="button" value="New user" class="button" onclick="UserBtn()">
+
     <table class="table">
         <thead>
         <tr>
@@ -85,7 +88,7 @@
             </fieldset>
             <fieldset>
                 <legend>Description</legend>
-                <textarea name="description" id="description" cols="30" rows="10"></textarea>
+                <textarea name="description" id="description" cols="30" rows="5"></textarea>
             </fieldset>
             <fieldset>
                 <legend style="justify-content: space-between;display: flex;width: 100%;">Files 
@@ -107,7 +110,7 @@
             </fieldset>
             <fieldset>
                 <legend>Result</legend>
-                <input type="text" name="result" id="result" placeholder="Result">
+                <textarea name="result" id="result"cols="30" rows="5"></textarea>
             </fieldset>
             <fieldset>
                 <legend>User</legend>
@@ -139,6 +142,41 @@
     const users = `<!--%USERS%-->`
     document.getElementById('user').innerHTML = users
     document.getElementById('userfilter').innerHTML = '<option value="all" selected>Все исполнители</option>'+users
+
+//Скачивание БД
+function SaveBD(){
+    let path = '/savedb'
+    const anchor = document.createElement('a');
+    anchor.href = path;
+    anchor.download = 'backup.db';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+}
+//Загрузка файлов
+document.getElementById("loaddb").addEventListener("change", (e)=>{LoadDB(e.target.files)});
+//Загрузка БД
+function LoadDB(files) {
+    let file = files[0]
+    let reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onload = function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/loaddb', true);
+        xhr.send(reader.result);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                location.reload()
+            }
+        };
+        
+    }
+    reader.onerror = function() {console.log(reader.error)}
+    
+}
+
+
+
 </script>
 <script src="./script.js"></script>
 </body>

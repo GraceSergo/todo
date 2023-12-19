@@ -4,6 +4,7 @@ document.addEventListener('click', (e)=>{
     const admin = document.querySelector('h1').innerText.includes('Admin')
     //Закрытие вывода задачи
     if (e.target.closest('.bgtask') && !e.target.closest('.newtask')) {
+        if (document.getElementById('files').dataset['files'] == '') return
         if (document.querySelector('.block')) {document.querySelector('.block').classList.remove('block')} 
         document.querySelector('.bgtask').classList.remove('active')
         document.getElementById('files').dataset['files'] = ''
@@ -32,6 +33,7 @@ document.addEventListener('click', (e)=>{
         document.querySelector('.cbg').classList.remove('active')
         location.hash=''
         location.reload()
+
     }
     //Закрытие редактирования пользователей
     if (e.target.closest('.bguser') && !e.target.closest('.newuser')) document.querySelector('.bguser').classList.remove('active')
@@ -57,6 +59,7 @@ document.addEventListener('click', (e)=>{
     if (e.target.closest('.showpimg')){document.querySelector('.showpimg').style.display = ''}
 })
 //Двойной клик по строке для измения задачи
+if (document.querySelector('.table tbody'))
 document.querySelector('.table tbody').addEventListener('dblclick',(e)=>{
     if (e.target.closest('tr').querySelector('td')) {
         let id = e.target.closest('tr').dataset['id']
@@ -261,12 +264,12 @@ document.getElementById('text').addEventListener('keypress',(e)=>{
     }
 })
 //Отправка сообщений на Enter
-document.getElementById('newtask').addEventListener('keypress',(e)=>{
-    if (e.which == 13) {
-        e.preventDefault()
-        SaveTask()
-    }
-})
+// document.getElementById('newtask').addEventListener('keypress',(e)=>{
+//     if (e.which == 13) {
+//         e.preventDefault()
+//         SaveTask()
+//     }
+// })
 //Отправка сообщений
 async function SendMessage(){
     event.preventDefault();

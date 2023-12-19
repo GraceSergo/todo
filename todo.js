@@ -13,7 +13,6 @@ const requestListener = function (req, res) {
         const hash = cookies.hash;
         if (req.url == '/'){
             res.writeHead(200, {'Content-Type': 'text/html'})
-		console.log('welcome')
             GetHTML(hash,res)
         }
         if (req.url == '/styles.css'){
@@ -29,6 +28,12 @@ const requestListener = function (req, res) {
         if (req.url.startsWith('/files/')){
             DownloadFiles(req.url,res)
         }
+
+        if (req.url.startsWith('/savedb')){
+            SaveDB(hash,res)
+        }
+
+        
         return
     } //get
 
@@ -36,6 +41,10 @@ const requestListener = function (req, res) {
         const cookies = parseCookies(req);
         const hash = cookies.hash;
 	 	let data = ''
+        if (req.url == '/loaddb'){
+            LoadDB(hash,req,res)
+            return
+        }
 		req.on('data', function(chunk) {
 			data += chunk
 		})
@@ -532,7 +541,7 @@ const options = {
 
 
 const server = https.createServer(requestListener);
-server.listen(8080, () => {
+server.listen(8080, '127.0.0.1', () => {
     console.log(`Server is running on http://127.0.0.1:8080`);
 })
 
@@ -544,4 +553,46 @@ function ConsoleError(err){
     console.error(a.toISOString())
     console.error(err)
     fs.appendFileSync('logs.txt',message)
+}
+
+//Сохранение БД
+function SaveDB(hash,res){
+    // res.writeHead(200, {'Content-Type': 'text/html'})
+    let sql =`SELECT ID_role FROM users WHERE hash = ?`
+    db.get(sql, [hash], (err, row) => {
+		if (err) {ConsoleError(err)}
+        if (row.ID_role == 1){
+            // db.close()
+            fs.readFile('todo.db', function (error, data) {
+                if (error) {
+                    res.statusCode = 404;
+                    res.end('Resourse not found!');
+                } else {
+                    res.end(data);
+                    return
+                }
+            })
+        }
+        // res.end('Error'); 
+        // return;
+    })
+}
+
+
+//Загрузка БД
+function LoadDB(hash,req,res){
+   let sql =`SELECT ID_role FROM users WHERE hash = ?`
+    db.get(sql, [hash], (err, row) => {
+		if (err) {ConsoleError(err)}
+        if (row.ID_role == 1){
+            db.close()
+            const dest = fs.createWriteStream(`todo.db`);
+            req.pipe(dest);
+            res.end('OK')
+            db = new sqlite3.Database('./todo.db');
+            return
+        }
+        res.end('Error'); 
+        return;
+    })
 }
