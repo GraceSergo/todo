@@ -411,7 +411,7 @@ function SaveFile(id,name,data,user){
 }
 //Декодирование файлов
 function decodeBase64(dataString) {
-    var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+    var matches = dataString.match(/^data:([A-Za-z0-9-+\/]+);base64,(.+)$/),
     response = {};
     if (!matches) return 'error'
     if (matches.length != 3) {
