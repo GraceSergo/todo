@@ -1,7 +1,7 @@
 html{min-height: 100%;}
 body {margin:0;padding:20px;font-family: sans-serif;}
 .table {border: 1px solid #eee;margin-top:20px;/* table-layout: fixed; */width: 100%;margin-bottom: 10px;border-collapse: collapse;color:#000;}
-.table td {padding: 5px 10px;border: 1px solid #aaa;text-align: left;}
+.table td {padding: 5px 10px;border: 1px solid #aaa;text-align: left; word-wrap: normal;}
 .table tbody tr{background: #f7f7f7;}
 .table th {font-weight: 400;padding: 5px;letter-spacing: 4px; text-transform: uppercase;background: #555;border: 1px solid #ddd; color: #ddd;}
 /*.table tbody tr:nth-child(odd) {background: #fff;}
@@ -78,7 +78,7 @@ input {border-radius: 4px; background: #fff;}
 
 
 
-/*body {background: linear-gradient(#141e30, #243b55);color: #fff;}
+body {background: linear-gradient(#141e30, #243b55);color: #fff;}
 .button {color: #03e9f4;background: #03e9f420;}
 .button:hover {background: #03e9f499;color: #fff;}
 .drag-image {border: 1px dashed #fff;}
@@ -86,4 +86,4 @@ input {border-radius: 4px; background: #fff;}
 .drag-image span{color: #fff;}
 .newtask, .newuser, .commentbox {background:#141e30ee; box-shadow: 0 15px 25px rgba(0,0,0,.8);}
 #newtask .filedel a {color: #03e9f4;}
-.table th {background: #03e9f420;border: 1px solid #141e30; color: #03e9f4;}*/
+.table th {background: #03e9f420;border: 1px solid #141e30; color: #03e9f4;}

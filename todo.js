@@ -393,7 +393,16 @@ function SaveFile(id,name,data,user){
     name = (user == 'admin') ? name : user+'_'+name
     if (id==0){id = 'Temp'}
     const path = 'taskfiles/'+id
-    fs.mkdir(path, (error) => {/*ConsoleError(error)*/});
+    try {
+        fs.accessSync( 'taskfiles' , fs.constants.F_OK);
+    } catch (err) {
+        fs.mkdir('taskfiles', (error) => {/*ConsoleError(error)*/});
+    }
+    try {
+        fs.accessSync( path , fs.constants.F_OK);
+    } catch (err) {
+        fs.mkdir(path, (error) => {/*ConsoleError(error)*/});
+    }
     const imageBuffer = decodeBase64(data);
     // fs.writeFileSync(path+'/'+name, imageBuffer.data, function(err) {ConsoleError(err)});
     if (imageBuffer === 'error') return 'error'
@@ -541,7 +550,7 @@ const options = {
 
 
 const server = https.createServer(requestListener);
-server.listen(8080, () => {
+server.listen(8080, '127.0.0.1', () => {
     console.log(`Server is running on http://127.0.0.1:8080`);
 })
 

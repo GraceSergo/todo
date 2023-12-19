@@ -99,10 +99,10 @@ function TaskBtn(id=0){
             if (table.rows[i].cells[0].innerText == id) {
                 document.querySelector('.files').innerHTML = table.rows[i].cells[4].innerHTML
                 form.elements['header'].value = table.rows[i].cells[1].innerText
-                form.elements['description'].value = table.rows[i].cells[2].innerText
+                form.elements['description'].value = table.rows[i].cells[2].innerHTML
                 document.getElementById('files').dataset['files'] = id
                 if (admin) document.getElementById('status').value = table.rows[i].cells[5].dataset['statusid']
-                form.elements['result'].value = table.rows[i].cells[6].innerText
+                form.elements['result'].value = table.rows[i].cells[6].innerHTML
                 if (admin) form.elements['user'].value = table.rows[i].cells[7].dataset['userid']
                 else {
                     //Запрет на изменение после завершения
@@ -111,8 +111,8 @@ function TaskBtn(id=0){
                     }
                 }
                 document.querySelector('.backhead').innerText = table.rows[i].cells[1].innerText
-                document.querySelector('.backdesc').innerText = table.rows[i].cells[2].innerText
-                document.querySelector('.backres').innerText = table.rows[i].cells[6].innerText
+                document.querySelector('.backdesc').innerHTML = table.rows[i].cells[2].innerHTML
+                document.querySelector('.backres').innerHTML = table.rows[i].cells[6].innerHTML
                 if(admin){
                     document.querySelector('.backuser').innerText = form.elements['user'].value
                     document.querySelector('.backstatus').innerText = form.elements['status'].value
@@ -143,8 +143,8 @@ async function SaveTask(){
 
     let text = 'LOGS:: '
     if(document.querySelector('.backhead').innerText != form.elements['header'].value) text += 'Заголовок изменен: '+form.elements['header'].value+'\n'
-    if(document.querySelector('.backdesc').innerText != form.elements['description'].value) text += 'Описание изменено: '+form.elements['description'].value+'\n'
-    if(document.querySelector('.backres').innerText != form.elements['result'].value) text += 'Результат изменен: '+form.elements['result'].value+'\n'
+    if(document.querySelector('.backdesc').innerHTML != form.elements['description'].value) text += 'Описание изменено: '+form.elements['description'].value+'\n'
+    if(document.querySelector('.backres').innerHTML != form.elements['result'].value) text += 'Результат изменен: '+form.elements['result'].value+'\n'
     if (admin){
         if(document.querySelector('.backuser').innerText != form.elements['user'].value) text += 'Пользователь изменен на '+document.getElementById('user')[document.getElementById('user').value].text+'\n'
         if(document.querySelector('.backstatus').innerText != form.elements['status'].value) text += 'Статус изменен на '+document.getElementById('status')[document.getElementById('status').value-1].text+'\n'
