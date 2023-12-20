@@ -514,7 +514,7 @@ const dropArea = document.querySelector(".drag-image"),
 dragText = dropArea.querySelector("span"),
 button = dropArea.querySelector("button"),
 input = document.getElementById("files");
-button.onclick = ()=>{e.preventDefault(); input.click();}
+button.onclick = (e)=>{e.preventDefault(); input.click();}
 input.addEventListener("change", function(){
   let files = this.files;
   dropArea.classList.add("active");
