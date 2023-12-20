@@ -150,7 +150,7 @@ async function SaveTask(){
     if(document.querySelector('.backdesc').innerHTML != form.elements['description'].value) text += 'Описание изменено: '+form.elements['description'].value+'\n'
     if(document.querySelector('.backres').innerHTML != form.elements['result'].value) text += 'Результат изменен: '+form.elements['result'].value+'\n'
     if (admin){
-        if(document.querySelector('.backuser').innerText != form.elements['user'].value) text += 'Пользователь изменен на '+document.getElementById('user')[document.getElementById('user').value].text+'\n'
+        if(document.querySelector('.backuser').innerText != form.elements['user'].value) text += 'Пользователь изменен на '+document.getElementById('user')[document.getElementById('user').selectedIndex].text+'\n'
         if(document.querySelector('.backstatus').innerText != form.elements['status'].value) text += 'Статус изменен на '+document.getElementById('status')[document.getElementById('status').value-1].text+'\n'
     }
 
