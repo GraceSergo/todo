@@ -3,9 +3,9 @@ const https = require('http')
 const sqlite3 = require('sqlite3').verbose();
 
 try {
-    fs.accessSync( 'taskfiles' , fs.constants.F_OK);
+    fs.accessSync( 'taskfiles/todo.db' , fs.constants.F_OK);
 } catch (err) {
-    fs.mkdirSync('taskfiles');
+    //fs.mkdirSync('taskfiles');
     fs.copyFileSync('newadmin.db', './taskfiles/todo.db')
 }
 
