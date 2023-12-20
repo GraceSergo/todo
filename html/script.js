@@ -3,18 +3,26 @@
 document.addEventListener('click', (e)=>{
     const admin = document.querySelector('h1').innerText.includes('Admin')
     //Закрытие вывода задачи
-    if (e.target.closest('.bgtask') && !e.target.closest('.newtask')) {
-        if (document.getElementById('files').dataset['files'] == '') {
-            if (!prompt('Закрыть без сохранения?')){
-                return
-            }
-        }
-        if (document.querySelector('.block')) {document.querySelector('.block').classList.remove('block')} 
-        document.querySelector('.bgtask').classList.remove('active')
-        document.getElementById('files').dataset['files'] = ''
-        // SaveTask()
-        location.reload()
+    if (e.target.closest('.closebtntask')) {
+        SaveTask(false)
     }
+
+
+    // if (e.target.closest('.bgtask') && !e.target.closest('.newtask')) {
+    //     if (document.getElementById('files').dataset['files'] == '') {
+    //         if (!confirm('Закрыть без сохранения?')){
+    //             return
+    //         }
+    //     }
+    //     if (document.querySelector('.block')) {document.querySelector('.block').classList.remove('block')} 
+    //     document.querySelector('.bgtask').classList.remove('active')
+    //     document.getElementById('files').dataset['files'] = ''
+    //     // SaveTask()
+    //     location.reload()
+    // }
+
+
+
     //Удаление файла
     if (e.target.closest('.del')){
         let file = e.target.closest('.filedel')
@@ -128,11 +136,41 @@ function TaskBtn(id=0){
     document.querySelector('.bgtask').classList.add('active')
 }
 //Сохранение и добавление задачи
-async function SaveTask(){
+async function SaveTask(s = true){
     const admin = document.querySelector('h1').innerText.includes('Admin')
     const form = document.querySelector('#newtask')
     const id = document.getElementById('files').dataset['files']
 
+    let text = 'LOGS:: '
+
+    if(document.querySelector('.backhead').innerText != form.elements['header'].value) text += 'Заголовок изменен: '+form.elements['header'].value+'\n'
+    if(document.querySelector('.backdesc').innerHTML != form.elements['description'].value) text += 'Описание изменено: '+form.elements['description'].value+'\n'
+    if(document.querySelector('.backres').innerHTML != form.elements['result'].value) text += 'Результат изменен: '+form.elements['result'].value+'\n'
+    if (admin && id != 0){
+        if(document.querySelector('.backuser').innerText != form.elements['user'].value) text += 'Пользователь изменен на '+document.getElementById('user')[document.getElementById('user').selectedIndex].text+'\n'
+        if(document.querySelector('.backstatus').innerText != form.elements['status'].value) text += 'Статус изменен на '+document.getElementById('status')[document.getElementById('status').value-1].text+'\n'
+    }
+  
+    if (text == 'LOGS:: ') {
+        document.getElementById('newtask').reset()
+        document.querySelector('.bgtask').classList.remove('active')
+        document.getElementById('files').dataset['files'] = ''
+        location.reload()
+        return
+
+    } else {
+        if (!s) {
+            if ( !confirm('Выйти без сохранения?')) return
+            else {
+                document.getElementById('newtask').reset()
+                document.querySelector('.bgtask').classList.remove('active')
+                document.getElementById('files').dataset['files'] = ''
+                location.reload()
+                return 
+            }
+        }
+    }
+    
     if (form.elements['header'].value == '') form.elements['header'].classList.add('error')
     if (form.elements['description'].value == '')  form.elements['description'].classList.add('error')
 
@@ -145,26 +183,7 @@ async function SaveTask(){
         return
     }
 
-    let text = 'LOGS:: '
-    if(document.querySelector('.backhead').innerText != form.elements['header'].value) text += 'Заголовок изменен: '+form.elements['header'].value+'\n'
-    if(document.querySelector('.backdesc').innerHTML != form.elements['description'].value) text += 'Описание изменено: '+form.elements['description'].value+'\n'
-    if(document.querySelector('.backres').innerHTML != form.elements['result'].value) text += 'Результат изменен: '+form.elements['result'].value+'\n'
-    if (admin){
-        if(document.querySelector('.backuser').innerText != form.elements['user'].value) text += 'Пользователь изменен на '+document.getElementById('user')[document.getElementById('user').selectedIndex].text+'\n'
-        if(document.querySelector('.backstatus').innerText != form.elements['status'].value) text += 'Статус изменен на '+document.getElementById('status')[document.getElementById('status').value-1].text+'\n'
-    }
 
-    if (text == 'LOGS:: ') {
-        if (!admin) {
-            document.getElementById('newtask').reset()
-            document.querySelector('.bgtask').classList.remove('active')
-            document.getElementById('files').dataset['files'] = ''
-            location.reload()
-            return
-        }
-        
-    }
-    
     let data = {}
     let filelist = document.querySelectorAll('#newtask .files .filedel')
     let files = []
@@ -267,6 +286,8 @@ document.getElementById('text').addEventListener('keypress',(e)=>{
         
     }
 })
+
+
 //Отправка сообщений на Enter
 // document.getElementById('newtask').addEventListener('keypress',(e)=>{
 //     if (e.which == 13) {
@@ -274,9 +295,11 @@ document.getElementById('text').addEventListener('keypress',(e)=>{
 //         SaveTask()
 //     }
 // })
+
+
 //Отправка сообщений
 async function SendMessage(){
-    event.preventDefault();
+    e.preventDefault();
     let data = {}
     data['id'] = document.querySelector('#comments>button').dataset['id']
     data['message'] = document.querySelector('#comments>input').value
@@ -432,7 +455,7 @@ async function GetNewTask(){
 }
 //Завершение выполнения задачи
 async function DoneTask(){
-    event.preventDefault();
+    e.preventDefault();
     let id = document.getElementById('files').dataset['files']
     let response = await fetch('/donetask', {
         method: 'POST',

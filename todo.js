@@ -1,6 +1,20 @@
 const fs = require('fs')
 const https = require('http')
 const sqlite3 = require('sqlite3').verbose();
+const { execSync } = require("child_process");
+
+//вычисление свободного места
+function GetFSsize(){
+    let command = `df -h taskfiles`
+    let result = execSync(command, {
+        stdio: ['pipe', 'pipe', 'ignore'],
+        timeout: 5000,
+    }).toString();
+    let arr = result.split('\n')[1].replace(/\s{2,}/g, ' ').split(' ')
+    if (arr.length<5) return 'Error'
+    result = `Size - ${arr[1]}   Used - ${arr[2]}   Avail - ${arr[3]}   Use% - ${arr[4]}` 
+    return result
+}
 
 try {
     fs.accessSync( 'taskfiles/todo.db' , fs.constants.F_OK);
@@ -169,6 +183,7 @@ function GetHTML(hash, res) {
         switch (role) {
             case 1:                                         //Admin
                 html = fs.readFileSync('./html/admin.html').toString();
+                html = html.replace('<!--%FSSIZE%-->', GetFSsize())
                 html = html.replace('<!--%USER%-->', login)
                 html = html.replace('<!--%USERS%-->',_html)
                 GetTable(userID,role,html,res)
