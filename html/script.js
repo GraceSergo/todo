@@ -4,7 +4,11 @@ document.addEventListener('click', (e)=>{
     const admin = document.querySelector('h1').innerText.includes('Admin')
     //Закрытие вывода задачи
     if (e.target.closest('.bgtask') && !e.target.closest('.newtask')) {
-        if (document.getElementById('files').dataset['files'] == '') return
+        if (document.getElementById('files').dataset['files'] == '') {
+            if (!prompt('Закрыть без сохранения?')){
+                return
+            }
+        }
         if (document.querySelector('.block')) {document.querySelector('.block').classList.remove('block')} 
         document.querySelector('.bgtask').classList.remove('active')
         document.getElementById('files').dataset['files'] = ''
