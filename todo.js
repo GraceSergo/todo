@@ -6,7 +6,7 @@ try {
     fs.accessSync( 'taskfiles' , fs.constants.F_OK);
 } catch (err) {
     fs.mkdirSync('taskfiles');
-    fs.copyFileSync('newdbadmin.db', './taskfiles/todo.db')
+    fs.copyFileSync('newadmin.db', './taskfiles/todo.db')
 }
 
 
