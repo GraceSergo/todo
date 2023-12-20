@@ -604,10 +604,10 @@ function LoadDB(hash,req,res){
 		if (err) {ConsoleError(err)}
         if (row.ID_role == 1){
             db.close()
-            const dest = fs.createWriteStream(`./tasklist/todo.db`);
+            const dest = fs.createWriteStream(`./taskfiles/todo.db`);
             req.pipe(dest);
             res.end('OK')
-            db = new sqlite3.Database('./tasklist/todo.db');
+            db = new sqlite3.Database('./taskfiles/todo.db');
             return
         }
         res.end('Error'); 
