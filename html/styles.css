@@ -40,6 +40,7 @@ input {border-radius: 4px; background: #fff;}
 #saveTask{margin-top: 5px; height: 85px; width: 150px;}
 .newtask fieldset input, .newuser fieldset input{/*width: 100%;*/ margin-bottom: 5px;}
 .newtask{height: 90%;}
+.noactive {opacity: .5; pointer-events: none;}
 .userselect{position: absolute; top: 35px; left: 20px;}
 .logout{position: absolute; right: 20px;}
 .downloads{display: none;}
