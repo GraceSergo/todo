@@ -52,6 +52,17 @@ const requestListener = function (req, res) {
         if (req.url.startsWith('/savedb')){
             SaveDB(hash,res)
         }
+        if (req.url == '/favicon.ico'){
+            fs.readFile('html/favicon.ico', function (error, data) {
+              if (error) {
+                  res.statusCode = 404;
+                  res.end('Resourse not found!');
+              } else {
+                  res.end(data);
+                  return
+              }
+          })
+        }
 
         
         return
