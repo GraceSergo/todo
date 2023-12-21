@@ -589,7 +589,8 @@ function CheckMsg(){
             }
             while (msgs[i] != undefined && i>-1 && i>msgs.length-5){
                 let dataformated = new Date(Number(msgs[i].date))
-                tooltip = `${msgs[i].login}(${dataformated.toLocaleString()}) : ${msgs[i].message}\n`+tooltip
+                let message = msgs[i].message.substr(0,100)
+                tooltip = `${msgs[i].login}(${dataformated.toLocaleString()}) : ${message}\n`+tooltip
                 i--
             }
             tr.querySelector('.comment').setAttribute('title',tooltip)
