@@ -36,7 +36,7 @@ document.addEventListener('click', (e)=>{
     //Открытие комментариев
     if (e.target.closest('.comment')){
         let id = e.target.closest('tr').dataset['id']
-        document.querySelector('#comments button').dataset['id'] = id
+        document.querySelector('#comments').dataset['id'] = id
         GetMessages(id)
         document.querySelector('.cbg').classList.add('active')
     }
@@ -44,7 +44,7 @@ document.addEventListener('click', (e)=>{
     if (e.target.closest('.cbg') && !e.target.closest('.commentbox')) {
         document.querySelector('.cbg').classList.remove('active')
         location.hash=''
-        location.reload()
+        CheckMsg()
 
     }
     //Закрытие редактирования пользователей
@@ -281,8 +281,8 @@ function Download (id, filename) {
 };
 //Отправка сообщений на Enter
 document.getElementById('text').addEventListener('keypress',(e)=>{
-    if (e.which == 13) {
-        if (document.getElementById('text').value != '') SendMessage()
+    if (e.which == 13 && !e.shiftKey) {
+        if (document.getElementById('text').value != '') e.preventDefault(); SendMessage()
         
     }
 })
@@ -299,10 +299,10 @@ document.getElementById('text').addEventListener('keypress',(e)=>{
 
 //Отправка сообщений
 async function SendMessage(){
-    e.preventDefault();
+    // e.preventDefault();
     let data = {}
-    data['id'] = document.querySelector('#comments>button').dataset['id']
-    data['message'] = document.querySelector('#comments>input').value
+    data['id'] = document.querySelector('#comments').dataset['id']
+    data['message'] = document.getElementById('text').value
     data['date'] = Date.now()
     let response = await fetch('/sendmessage', {
         method: 'POST',
@@ -313,8 +313,7 @@ async function SendMessage(){
         let _data = await response.text()
         if (_data == 'true') {
             document.querySelector('#text').value = ''
-            location.hash = '#c'+document.querySelector('#comments>button').dataset['id']
-            location.reload()
+            GetMessages(document.querySelector('#comments').dataset['id'])
         }
     }
 }
@@ -328,7 +327,7 @@ async function GetMessages(id){
     if (response.ok) {
         let _data = JSON.parse(await response.text())
         const div = document.querySelector('.commenttext')
-        let user = document.querySelector('.logout').innerText.slice(0,-1)
+        let user = document.querySelector('.logout').innerText.trim() 
         div.innerHTML = ''
         if (_data != {}) {
             let key = Object.keys(_data)
@@ -533,6 +532,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
     CheckboxSelect()
     GetFILES()
+    CheckMsg()
     
 })
 
@@ -564,3 +564,36 @@ dropArea.addEventListener("drop", (event)=>{
   ReadFiles(files)
 });
 //END Drag and Drop
+
+//Получение сообщений
+function CheckMsg(){
+    let table = document.querySelectorAll('tbody tr')
+    table.forEach(async (tr)=>{
+        let response = await fetch('/checkmsg', {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/html' },
+            body: tr.dataset['id']
+        })
+        if (response.ok) {
+            let _data = await response.text()
+            let msgs = JSON.parse(_data)
+            let user = document.querySelector('.logout').innerText.trim() 
+            let tooltip = ''
+            tr.querySelector('.comsum').innerText = msgs.length
+            msgs = msgs.sort((a, b)=>{a.ID-b.ID})
+            let i = msgs.length-1
+            if (msgs[i].login != user && msgs[i].status == 1) {
+                tr.querySelector('.comment').classList.add('new')
+            } else {
+                tr.querySelector('.comment').classList.remove('new')
+            }
+            while (msgs[i] != undefined && i>-1 && i>msgs.length-5){
+                let dataformated = new Date(Number(msgs[i].date))
+                tooltip = `${msgs[i].login}(${dataformated.toLocaleString()}) : ${msgs[i].message}\n`+tooltip
+                i--
+            }
+            tr.querySelector('.comment').setAttribute('title',tooltip)
+        }
+    })
+
+}

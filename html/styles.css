@@ -45,11 +45,15 @@ input {border-radius: 4px; background: #fff;}
 .downloads{display: none;}
 #checkboxes{font-size: 10px; text-align: left;}
 .comment{font-weight: bold; color: #777; font-size: 30px; cursor: pointer; opacity: .7;}
+.cdiv{position: relative;}
+.comsum{position: absolute; top: -2px; right: 50%; font-size: 10px; transform: translateX(50%);}
 .comment.new{color: #000;}
 .comment:hover{opacity: 1;}
 #comments{width: 80%;}
-#comments input{width:70%; margin: 10px 0 20px auto;}
+#comments input{width: 70px; margin: 0 0 0 9px; height: 100%;}
 #comments button{width:27%; margin: 10px 0 20px auto;}
+.comsend{display: flex; width: 100%; height: 78px; flex-direction: row; align-items: center; margin-top: 10px;}
+#text{width: 100%; height: 100%;}
 .commenttext{display:flex; height: 500px; overflow-x: auto; width:100%; border: 1px solid #000; flex-direction: column; color: black; background: #fffd;}
 .commenttext>div{margin-bottom: 15px;}
 .date, .user{color:#0300d1; display: inline; font-weight: bold;} 

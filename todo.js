@@ -126,7 +126,10 @@ const requestListener = function (req, res) {
             if (req.url == '/getfilestask'){
                 GetFILES(data,res)
             }
-            
+            //Получение сообщений
+            if (req.url == '/checkmsg'){
+                CheckMSG(data,res)
+            }
 		})
 		return;
 	 } //POST*/
@@ -255,25 +258,22 @@ function NewUser(hash,data,res){
 //Получение списка задач
 function GetTable(userID,role,html,res){
     res.writeHead(200, {'Content-Type': 'text/html'})
-    let sql=`SELECT t.*, c.ID_user AS cIDuser, c.status AS cS, u.login, s.status,c.ID AS cID FROM tasks t 
+    let sql=`SELECT t.*, u.login, s.status FROM tasks t 
     INNER JOIN status s ON s.ID = t.ID_status
-    INNER JOIN users u ON t.ID_user = u.ID
-    LEFT JOIN comments c ON t.ID=c.ID_tasks WHERE (c.ID = (SELECT MAX(ID) FROM comments WHERE ID_tasks = t.ID) OR c.ID IS NULL)`
-    if (role == 2) sql+=` AND t.ID_user = ${userID}`
+    INNER JOIN users u ON t.ID_user = u.ID`
+    if (role == 2) sql+=` WHERE t.ID_user = ${userID}`
 
     db.all(sql, [], (err, rows) => {
         if (err) {ConsoleError(err); role = 1; return}
         let _html = ''
         rows.forEach((row)=>{
             let ID_task = row.ID
-            let stat = ''
-            if (row.cIDuser != userID && row.cS == 1) stat = ' new'
             let filehtml = ''
             _html += `<tr data-id="${ID_task}">
                 <td>${ID_task}</td>
                 <td>${row.header}</td>
                 <td>${row.description}</td>
-                <td><span class='comment${stat}'>&#9993;</span></td>
+                <td><div class='cdiv'><span class='comment'>&#9993;</span><span class='comsum'></span></div></td>
                 <td>${filehtml}</td>
                 <td data-statusid="${row.ID_status}" class="status${row.ID_status}">${row.status}</td>
                 <td>${row.result}</td>`
@@ -510,12 +510,12 @@ function SendMessage(data, hash, res){
     let _data = JSON.parse(data)      //_data['message'] , _data['date'] , _data['id']
     if (_data['message'] == '') {res.end('Error'); return}
     let _sql = `INSERT INTO comments (ID_tasks,ID_user,message,date,status) VALUES(?,(SELECT ID FROM users WHERE hash=?),?,?,1);`
-        msg = [_data['id'],hash,_data['message'],_data['date']]
-        db.get(_sql,msg, (err)=>{
-            if (err) {ConsoleError(err); res.end('Error'); return}
-        })
-        res.end('true')
-        return
+    msg = [_data['id'],hash,_data['message'],_data['date']]
+    db.get(_sql,msg, (err)=>{
+        if (err) {ConsoleError(err); res.end('Error'); return}
+    })
+    res.end('true')
+    return
 }
 //Получение сообщений
 function GetMessages(taskid,hash,res){
@@ -631,6 +631,16 @@ function LoadDB(hash,req,res){
             return
         }
         res.end('Error'); 
+        return;
+    })
+}
+
+//Получение сообщений
+function CheckMSG(data, res){
+    let sql =`SELECT a.*, b.login from comments a INNER JOIN users b WHERE a.ID_user = b.ID AND a.ID_tasks = ?`
+    db.all(sql, [data], (err, rows) => {
+		if (err) {ConsoleError(err)}
+        res.end(JSON.stringify(rows)); 
         return;
     })
 }
