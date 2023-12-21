@@ -198,6 +198,8 @@ async function SaveTask(s = true){
     if (admin) data['user'] = form.elements['user'].value
     data['text'] = text
 
+    document.getElementById('saveTask').classList.add('noactive')
+    document.getElementById('saveTask').value = 'Save....'
     let response = await fetch('/addtask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -207,6 +209,7 @@ async function SaveTask(s = true){
         document.getElementById('newtask').reset()
         document.querySelector('.bgtask').classList.remove('active')
         document.getElementById('files').dataset['files'] = ''
+        document.getElementById('saveTask').value = 'Saved'
         location.reload();
     }
 }
@@ -587,7 +590,7 @@ function CheckMsg(){
             } else {
                 tr.querySelector('.comment').classList.remove('new')
             }
-            while (msgs[i] != undefined && i>-1 && i>msgs.length-5){
+            while (msgs[i] != undefined && i>-1 && i>msgs.length-6){
                 let dataformated = new Date(Number(msgs[i].date))
                 let message = msgs[i].message.substr(0,100)
                 tooltip = `${msgs[i].login}(${dataformated.toLocaleString()}) : ${message}\n`+tooltip
