@@ -79,8 +79,11 @@
         <span>Comment</span>
         <form action="" id="comments" >
             <div class="commenttext"></div>
-            <input type="text" name="text" id="text" autofocus>
-            <input type="button" class="send" onclick="SendMessage()" value="Send">
+            <div class="comsend">
+                <textarea name="text" id="text" cols="30" rows="10" autofocus></textarea>
+                <input type="button" class="send" onclick="SendMessage()" value="Send">
+            </div>
+
         </form>
     </div>
 </div>
